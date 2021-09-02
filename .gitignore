@@ -42,8 +42,7 @@ build/Release
 jspm_packages/
 
 # My GitIgnore List
-*.env
-*memo
+**memo
 
 # TypeScript v1 declaration files
 typings/
