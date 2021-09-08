@@ -98,21 +98,28 @@ PUT /api/posts/:id
 { title, body }
 */
 
-exports.replace = (ctx) => {
-  
 
 
-};
 
 /*
 게시글 수정 특정 필드
 PATCH /api/posts/:id
 {title or body}
 */
-exports.update = (ctx) => {
-  
+exports.update = async (ctx) => {
+  const { id } = ctx.params;
+  try{
+    const post = await Post.findByIdAndUpdate(id, ctx.request.body, {new: true}).exec(); // id, request.body(바꿀내용), new:true를하면 업데이트된 값을 리턴해준다. false일때는 업데이트 되기전의 데이터를 리턴해준다.
+    
+    if(!post){
+      ctx.status = 404;
+      return;
+    }
 
-
+    ctx.body = post;
+  } catch(e){
+    ctx.throw(500, e);
+  }
 };
 
 
