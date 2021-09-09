@@ -16,12 +16,14 @@ const router = new Router();
 const { PORT, MONGO_URI } = process.env; // 환경변수 가져옴
 
 router.use('/api', api.routes());
+// const createFakeData = require('./createFakeData');
 
 // Database Connect
 mongoose
 .connect(MONGO_URI, {useNewUrlParser: true})
 .then(() => {
   console.log('Connected to MongoDB');
+  // createFakeData();
 })
 .catch(e => {
   console.error(e); //색깔이 다를뿐..?

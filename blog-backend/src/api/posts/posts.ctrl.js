@@ -3,6 +3,8 @@
 const Post = require('../../models/post');
 
 const mongoose = require('mongoose');
+const Joi = require('joi'); // for validation?
+
 const {ObjectId} = mongoose.Types;
 
 // MiddleWare (for Validation)
@@ -22,7 +24,25 @@ POST /api/posts
 */
 
 // write는 내가 정하는 이름  like exports const write = ctx => {}
+// 원래는 여기서 validation을 해야함. title이나 body값을 체크함.
 exports.write = async (ctx) => {
+  // validation 
+  const schema = Joi.object().keys({
+    title: Joi.string().required(),
+    body: Joi.string().required(),
+    tags: Joi.array()
+      .items(Joi.string())
+      .required()
+  });
+
+  const result = schema.validate(ctx.request.body);
+  if(result.error){
+    ctx.status = 400;
+    ctx.body = result.error;
+    return;
+  }
+
+
   const {title, body, tags} = ctx.request.body;
 
   // model을 만듬
@@ -44,10 +64,34 @@ exports.write = async (ctx) => {
 게시글 목록 조회
 GET /api/posts
 */
-exports.list = async(ctx) => {
+exports.list = async(ctx) => { //10은 소숫점없이 받는다는 뜻?
+  const page = parseInt(ctx.query.page || '1', 10); // query는 컨텍스트에 있는거고 페이지는 내가만든것 // localhost:4000/api/posts?page=2
+  // query.page가만약 값이없으면 non일텐데 그러면 에러가 뜰거라 1을 줬음
+
+  if(page < 1){
+    ctx.status = 400;
+    return;
+  }
+
   try{
-    const posts = await Post.find().exec(); //find는 몽구스 함수 
-    ctx.body = posts;
+    // 글을 최신순으로 보여줄때 
+    const pageItemCount = 10;
+    const posts = await Post.find() //find로찾은 어레는 몽구스 인스턴스를 가지고 있는 어레이라서 그안에있는 인스턴스들은 바로 변경을못해서 아래서 toJSON이라는 함수를 써서 바꿔서 쓸수있음
+      .sort({_id: -1})  // sort(_id가 -1이면 내림차수, 1이면 오름차수)
+      .limit(pageItemCount)    // 10개씩 보여주기
+      .skip((page - 1) * pageItemCount) //스킵해서 보여주기
+      .exec(); // find는 몽구스 함수 
+    const postCount = await Post.countDocuments().exec();
+    ctx.set('Last-Page', Math.ceil(postCount / pageItemCount)); //set은 header에다가 넣어주는것 //ceil은 올림 // 나누기10은 한페이지당 10개씩보여줄려고 //4.5면 마지막 페이지는 5개를 보여줘야해서 //이건 프론트쪽에서 마지막페이지를 알아야하기때문에 정보를 주기위해
+    
+    //다 받아온거를..
+    ctx.body = posts
+      .map(post => post.toJSON())  //find를 통해서 조회한 데이터는 mongoose에서 제공한 인스턴스라 toJSON으로 변환하고 필요한 부분을 바꿀수있다.
+      .map(post => ({
+        ...post,
+        body:
+        post.body.length < 200 ? post.body : `${post.body.slice(0, 200)}...` //글자가 200개가 넘으면 ... 으로 하기
+      })); 
   } catch(e){
     ctx.throw(500, e);
   }

@@ -17,7 +17,6 @@ posts.get('/', postsCtrl.list);
 posts.post('/', postsCtrl.write);
 
 posts.get('/:id', postsCtrl.checkObjectId, postsCtrl.read); //중간에들어간건 미들웨어로 사용
-
 posts.delete('/:id', postsCtrl.checkObjectId, postsCtrl.remove);
 // posts.put('/:id', postsCtrl.replace);
 posts.patch('/:id', postsCtrl.checkObjectId, postsCtrl.update);
