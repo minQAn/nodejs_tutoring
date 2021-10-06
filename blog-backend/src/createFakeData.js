@@ -14,3 +14,4 @@ module.exports = function createFakeData(){
         console.log(docs);
     });
 };
+

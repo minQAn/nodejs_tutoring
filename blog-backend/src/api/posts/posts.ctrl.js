@@ -25,6 +25,7 @@ POST /api/posts
 
 // write는 내가 정하는 이름  like exports const write = ctx => {}
 // 원래는 여기서 validation을 해야함. title이나 body값을 체크함.
+// 프론트에서 validation을 하더라도 백에서 해야하는 이유는 컴퓨터를 조금 아는 사람이 이 주소로 포스맨 같은걸로 어긋나는 정보를 보낼 수도 있기 때문에
 exports.write = async (ctx) => {
   // validation 
   const schema = Joi.object().keys({
@@ -105,7 +106,7 @@ exports.read = async(ctx) => {
   const {id} = ctx.params;
   try{
     const post = await Post.findById(id).exec();
-
+    
     if(!post){
       ctx.status = 404;
       ctx.body = {
@@ -151,6 +152,23 @@ PATCH /api/posts/:id
 {title or body}
 */
 exports.update = async (ctx) => {
+  //validation
+  const schema = Joi.object().keys({
+    title: Joi.string(),
+    body: Joi.string(),
+    tags: Joi.array()
+      .items(Joi.string())     
+  });
+  
+  const result = schema.validate(ctx.request.body);
+
+  if(result.error){
+    ctx.status = 400;
+    ctx.body = result.error;
+    return;
+  }
+  // validation end----
+  
   const { id } = ctx.params;
   try{
     const post = await Post.findByIdAndUpdate(id, ctx.request.body, {new: true}).exec(); // id, request.body(바꿀내용), new:true를하면 업데이트된 값을 리턴해준다. false일때는 업데이트 되기전의 데이터를 리턴해준다.

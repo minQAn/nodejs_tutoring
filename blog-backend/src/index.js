@@ -20,14 +20,14 @@ router.use('/api', api.routes());
 
 // Database Connect
 mongoose
-.connect(MONGO_URI, {useNewUrlParser: true})
-.then(() => {
-  console.log('Connected to MongoDB');
-  // createFakeData();
-})
-.catch(e => {
-  console.error(e); //색깔이 다를뿐..?
-});
+  .connect(MONGO_URI, {useNewUrlParser: true})
+  .then(() => {
+    console.log('Connected to MongoDB');
+    // createFakeData();
+  })
+  .catch(e => {
+    console.error(`데이터베이스 접속 실패: ${e}`); //색깔이 다를뿐..?
+  });
 
 // 아래줄 라우터 적용하기전에 파싱을 해야함.
 app.use(bodyParser());
