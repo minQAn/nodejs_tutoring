@@ -1,5 +1,5 @@
 # nodejs_tutoring
-Desktop2
+
 tutor with IG
 
 
@@ -8,3 +8,5 @@ tutor with IG
 //9월7일 
 // yarn add joi  (for validation)
 // 숙제 Joi 로 update를 validation해보기 
+
+// 10월 5일
