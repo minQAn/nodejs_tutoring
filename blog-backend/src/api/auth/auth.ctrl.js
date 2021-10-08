@@ -73,7 +73,6 @@ exports.login = async(ctx) => {
 
     try{
         const user = await User.findByUsername(username);
-
         if(!user){  //아이디가 없을경우
             ctx.status = 401; 
             return;
@@ -97,6 +96,9 @@ exports.login = async(ctx) => {
 
 // yarn add jsonwebtoken 
 // openssl rand -hex 64
+
+// 10월 5일 todo
+// 로그인이 안되고 not found 뜨는 문제 해결하기
 
 exports.check = async(ctx) => {
     
