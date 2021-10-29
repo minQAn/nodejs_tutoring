@@ -17,6 +17,7 @@ const { PORT, MONGO_URI } = process.env; // 환경변수 가져옴
 
 router.use('/api', api.routes());
 // const createFakeData = require('./createFakeData');
+const jwtMiddleware = require('./lib/jwtMiddleware'); // 10/28 jwt token
 
 // Database Connect
 mongoose
@@ -31,6 +32,7 @@ mongoose
 
 // 아래줄 라우터 적용하기전에 파싱을 해야함.
 app.use(bodyParser());
+app.use(jwtMiddleware); // jwt token middleware 적용
 // 라우터쓰겠다는 거고 보통 코아쓸때 이렇게 쓴다고함. 그냥 외우기
 app.use(router.routes()).use(router.allowedMethods());
 

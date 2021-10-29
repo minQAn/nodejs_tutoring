@@ -41,10 +41,10 @@ exports.register = async(ctx) => {
 
         //password..
         await user.setPassword(password); // 패스워드는 여기에서
-        await user.save();
+        await user.save(); // data베이스에 유저등록이됨
 
-        const data = user.toJSON();
-        delete data.hashedPassword; // 비밀번호를 같이 전송하면 위험하니까
+        // const data = user.toJSON(); // response할때 비밀번를 지우고 보내려고
+        // delete data.hashedPassword; // 비밀번호를 같이 전송하면 위험하니까
 
         ctx.body = user.serialize();
         const token = user.generateToken();
@@ -65,9 +65,11 @@ exports.register = async(ctx) => {
     }
 */
 exports.login = async(ctx) => {
+    console.log('test');
     const {username, password} = ctx.request.body;
     if(!username || !password){
         ctx.status = 401 //Unathroized
+        console.log('1');
         return;
     }
 
@@ -75,15 +77,18 @@ exports.login = async(ctx) => {
         const user = await User.findByUsername(username);
         if(!user){  //아이디가 없을경우
             ctx.status = 401; 
+            console.log('2');
             return;
         }
 
         const valid = await user.checkPassword(password);
         if(!valid){
             ctx.status = 401;
+            console.log('3');
             return;
         }
 
+        ctx.body = user.serialize(); //mongo db -> json 
         const token = user.generateToken();
         ctx.cookies.set('access_token', token, {
             maxAage: 1000 * 60 * 60 * 24 * 7,    //밀리세컨이라1000 곱한거고 60초 60분 24시간 7일
@@ -99,11 +104,23 @@ exports.login = async(ctx) => {
 
 // 10월 5일 todo
 // 로그인이 안되고 not found 뜨는 문제 해결하기
+// 10월 28일
+// 토큰은 유요한지기억하기위해
 
 exports.check = async(ctx) => {
+    const { user } = ctx.state;
+
+    if(!user){
+        //No login
+        ctx.status = 401;
+        return;
+    }
     
+    ctx.body = user;
 };
 
+
+// 숙제 10월28일  <-- 로그아웃하고, 연장하는거 찾아공부, 토큰개념 복습
 exports.logout = async(ctx) => {
     
 };
