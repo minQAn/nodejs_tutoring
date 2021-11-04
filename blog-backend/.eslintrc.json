@@ -19,5 +19,6 @@
         "no-unused-vars": "warn",  //warn정도로만해줘라 
         "no-console":"off"
         
-    }
+    },
+    "parser": "babel-eslint"
 }

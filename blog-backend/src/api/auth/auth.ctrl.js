@@ -107,20 +107,24 @@ exports.login = async(ctx) => {
 // 10월 28일
 // 토큰은 유요한지기억하기위해
 
+
+// 개발자가 체크하려고 만듬 + middleware에서 사용하려고
 exports.check = async(ctx) => {
-    const { user } = ctx.state;
+    const { user } = ctx.state; //middleware 에서 생성됬음
 
     if(!user){
         //No login
-        ctx.status = 401;
+        ctx.status = 401;   // no page
         return;
     }
     
     ctx.body = user;
 };
 
+//11월4일  토큰 재발급 in jwtMiddleware에서 했음.  3.5일 이하면 자동으로 되게
 
 // 숙제 10월28일  <-- 로그아웃하고, 연장하는거 찾아공부, 토큰개념 복습
 exports.logout = async(ctx) => {
-    
+    ctx.cookies.set('access_token');    //토큰 이름만 넣고 그안에 값은 없애야함.
+    ctx.status = 204;   // no content
 };

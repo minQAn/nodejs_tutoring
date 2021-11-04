@@ -34,7 +34,7 @@ UserSchema.methods.serialize = function(){
 UserSchema.methods.generateToken = function(){
     const token = jwt.sign( //1. 첫번째 파라미터로는 토큰안에 집어넣어주고 싶은 정보
         {
-            _id: this.id,
+            _id: this.id,  //유저모델은 각각 오브젝트아이디..를 말함
             username: this.username
         },
         process.env.JWT_SECRET,  //2. 토큰을 암호할떄쓸 랜덤문자열? 
