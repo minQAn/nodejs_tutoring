@@ -65,7 +65,7 @@ exports.write = async (ctx) => {
 게시글 목록 조회
 GET /api/posts
 */
-exports.list = async(ctx) => { //10은 소숫점없이 받는다는 뜻?
+exports.list = async(ctx) => { //10은 소숫점없이 받는다는 뜻? decimal 10진법
   const page = parseInt(ctx.query.page || '1', 10); // query는 컨텍스트에 있는거고 페이지는 내가만든것 // localhost:4000/api/posts?page=2
   // query.page가만약 값이없으면 non일텐데 그러면 에러가 뜰거라 1을 줬음
 
