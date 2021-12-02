@@ -30,6 +30,7 @@ const initialState = {
 const auth = handleActions( //reducer 할때 타입받아와서 switch안에서 state변경하고 했던 그런작업을 좀더 깔끔하게 해주는 함수
     {
         // onChange...
+        
         // [CHANGE_FIELD]: (state, action) => state, // return state 
         [CHANGE_FIELD]: (state, {payload: {form, key, value}}) => //payload라고 날라옴 라이브러리에서
             produce(state, draft => {   // immer 라이브러리 사용했음. draft라는걸 받아옴.. 전체 state를 말함..?
