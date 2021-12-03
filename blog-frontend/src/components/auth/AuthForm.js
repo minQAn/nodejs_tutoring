@@ -50,18 +50,38 @@ const textMap = {
 }
 
 
-const AuthForm = ({ type }) => {
+const AuthForm = ({ type, form, onChange, onSubmit}) => {
     const text = textMap[type];
 
     return (
         <AuthFormBlock>
             <h3>{text}</h3>
-            <form>
-                <StyledInput autoComplete="username" name="username" placeholder="ID" />  {/* autoComplete는 이전기록 나열 */}
-                <StyledInput autoComplete="new-password" name="password" placeholder="PASSWORD" type="password" />
+            <form onSubmit={onSubmit}>
+                <StyledInput 
+                    autoComplete="username" 
+                    name="username" 
+                    placeholder="ID" 
+                    onChange={onChange} 
+                    value={form.username}   //value를 리액트에서 컨트롤하려고
+                    />  {/* autoComplete는 이전기록 나열 */}
+                <StyledInput 
+                    autoComplete="new-password" 
+                    name="password" 
+                    placeholder="PASSWORD" 
+                    type="password" 
+                    onChange={onChange}
+                    value={form.password}
+                    />
                 {
                     type === 'register' && (
-                        <StyledInput autoComplete="new-password" name="paasswordConfirm" placeholder="PASSWORD CONFIRM" type="password" />
+                        <StyledInput 
+                            autoComplete="new-password" 
+                            name="passwordConfirm" 
+                            placeholder="PASSWORD CONFIRM" 
+                            type="password"
+                            onChange={onChange} 
+                            value={form.passwordConfirm}
+                            />
                     )
                 }
                 
