@@ -5,11 +5,19 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
-import { createStore } from 'redux';
+import { createStore, applyMiddleware } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
-import rootReducer from './modules';
+import createSagaMiddleware from 'redux-saga';
+import rootReducer, {rootSaga} from './modules';
 
-const store = createStore(rootReducer, composeWithDevTools());
+
+//비동기 처리 저장소? like axios
+const sagaMiddleware = createSagaMiddleware();
+
+//data 저장?
+const store = createStore(rootReducer, composeWithDevTools(applyMiddleware(sagaMiddleware)));
+
+sagaMiddleware.run(rootSaga); //리덕스 사가를 쓸때 사용방법
 
 ReactDOM.render(
   <Provider store={store}>

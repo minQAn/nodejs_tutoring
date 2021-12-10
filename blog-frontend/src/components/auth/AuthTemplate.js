@@ -43,6 +43,7 @@ const AuthTemplate = ({children}) => { // loginForm in this case
             </WhiteBox>            
         </AuthTemplateBlock>
     );
-}
+};
+
 
 export default AuthTemplate;
