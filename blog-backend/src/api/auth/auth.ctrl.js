@@ -49,7 +49,7 @@ exports.register = async(ctx) => {
         ctx.body = user.serialize();
         const token = user.generateToken();
         ctx.cookies.set('access_token', token, {
-            maxAage: 1000 * 60 * 60 * 24 * 7,    //밀리세컨이라1000 곱한거고 60초 60분 24시간 7일
+            maxAge: 1000 * 60 * 60 * 24 * 7,    //밀리세컨이라1000 곱한거고 60초 60분 24시간 7일
             httpOnly: true // 자바스크립트를 통해서 쿠키안의 내용을 조회할수 없게함 (보안때문에)
         });
     } catch(e){
@@ -68,7 +68,7 @@ exports.login = async(ctx) => {
     console.log('test');
     const {username, password} = ctx.request.body;
     if(!username || !password){
-        ctx.status = 401 //Unathroized
+        ctx.status = 401; //Unathroized
         console.log('1');
         return;
     }
@@ -91,7 +91,7 @@ exports.login = async(ctx) => {
         ctx.body = user.serialize(); //mongo db -> json 
         const token = user.generateToken();
         ctx.cookies.set('access_token', token, {
-            maxAage: 1000 * 60 * 60 * 24 * 7,    //밀리세컨이라1000 곱한거고 60초 60분 24시간 7일
+            maxAge: 1000 * 60 * 60 * 24 * 7,    //밀리세컨이라1000 곱한거고 60초 60분 24시간 7일
             httpOnly: true // 자바스크립트를 통해서 쿠키안의 내용을 조회할수 없게함 (보안때문에)
         });
     } catch(e){
