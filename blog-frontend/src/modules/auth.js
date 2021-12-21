@@ -1,3 +1,5 @@
+// 레지스터랑 로그인 form을 다루는 부분
+
 import { createAction, handleActions } from 'redux-actions';
 import produce from 'immer';
 import { takeLatest } from 'redux-saga/effects';
@@ -42,9 +44,10 @@ export const login = createAction(LOGIN, ({ username, password }) => ({ // paylo
 // Create Saga
 const registerSaga = createRequestSaga(REGISTER, authAPI.register); //type, payload
 const loginSaga = createRequestSaga(LOGIN, authAPI.login);
+
 export function * authSaga(){
     yield takeLatest(REGISTER, registerSaga); // 연결해주는 부분..?가장 마지막으로 dispatch된 함수만 처리하겠다. (여러번 요청이 들어왔을경우..?)
-    yield takeLatest(LOGIN, loginSaga);    
+    yield takeLatest(LOGIN, loginSaga);    // 여러개가 실행되면 이전건 취소되고 최근거가 실행이 됨.
 };
 
 export const initializeForm = createAction(INITIALIZE_FORM,
