@@ -1,8 +1,11 @@
 import React from 'react';
 import styled, { css } from 'styled-components';
 import palette from '../../lib/styles/palette';
+// import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom'; //useNavigate는 마우스를 데면 브라우즈 밑에 왼쪽에 링크가 안뜸.
 
-const StyledButton = styled.button`
+
+const buttonStyle = css`
     border: none;
     border-radius: 4px;
     font-size: 1rem;
@@ -41,7 +44,30 @@ const StyledButton = styled.button`
     }
 `;
 
-const Button = props => <StyledButton {...props} /> //onClick같은 것들을 보내오면 받아온 props를 그대로 넘겨줌
+const StyledButton = styled.button`
+    ${buttonStyle}
+`;
+
+const StyledLink = styled(Link)`
+    ${buttonStyle}
+`;
+
+const Button = props => { //onClick같은 것들을 보내오면 받아온 props를 그대로 넘겨줌
+    // const navigate = useNavigate();    
+    // const onClick = e => {
+    //     if(to){
+    //         navigate(to);
+    //     }
+    //     if(rest.onClick){
+    //         rest.onClick(e);
+    //     }
+    // }
+    
+    return props.to ? (<StyledLink {...props} cyan={props.cyan ? 1: 0} />
+        ) : (
+            <StyledButton {...props} />
+        )
+} 
 
 export default Button;
 

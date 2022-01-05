@@ -12,6 +12,13 @@ const AuthFormBlock = styled.div`
     }
 `;
 
+const ErrorMessage = styled.div`
+    color: red;
+    text-align: center;
+    font-size: 0.875rem;
+    margin-top: 1rem;
+`;
+
 const StyledInput = styled.input`
     font-size: 1rem;
     border: none;
@@ -20,7 +27,7 @@ const StyledInput = styled.input`
     outline: none;      // 클릭하면 주변에 테두리 파래지는거 없애는거임
     width: 100%;
     &:focus{
-        color: ${palette.teal[0]}
+        color: ${palette.teal[0]};
         border-bottom: 1px solid ${palette.gray[7]};
     }
     & + & {  // 처음꺼빼고 뒤에 인접한것들 적용됨
@@ -50,7 +57,7 @@ const textMap = {
 }
 
 
-const AuthForm = ({ type, form, onChange, onSubmit}) => {
+const AuthForm = ({ type, form, onChange, onSubmit, error }) => {
     const text = textMap[type];
 
     return (
@@ -85,6 +92,7 @@ const AuthForm = ({ type, form, onChange, onSubmit}) => {
                     )
                 }
                 
+                {error && <ErrorMessage>{error}</ErrorMessage>}
                 <ButtonWithMarginTop cyan fullWidth>{text}</ButtonWithMarginTop>
             </form>
             <Footer>

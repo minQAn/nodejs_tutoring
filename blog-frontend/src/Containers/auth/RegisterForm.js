@@ -1,12 +1,16 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { changeField, initializeForm, register } from '../../modules/auth';
 import AuthForm from '../../components/auth/AuthForm';
 import { check } from '../../modules/user'; //login check
+import { useNavigate } from 'react-router-dom';
 
 //실제적으로 데이터를 주고받고 하는 부분이기 때문에 component보다는 container가 맞음
-const RegisterForm = () => {
+const RegisterForm = () => { 
     const dispatch = useDispatch();
+    const navigate = useNavigate();
+    const [error, setError] = useState(null);
+
     const { form, auth, authError, user } = useSelector(({ auth, user }) => ({ //auth, user에 이름을 다르게해야한다..?
         form: auth.register,
         auth: auth.auth,
@@ -28,8 +32,17 @@ const RegisterForm = () => {
     const onSubmit = e => {
         e.preventDefault();
         const { username, password, passwordConfirm } = form;
+
+        if([username, password, passwordConfirm].includes('')){
+            setError('No Empty!');
+            return;
+        }
+
         if(password !== passwordConfirm) {
             // Error
+            setError('Password not same!');
+            dispatch(changeField({ form: 'register', key: 'password', value: ''})); //초기화
+            dispatch(changeField({form: 'register', key: 'passwordConfirm', value: ''}));
             return;
         }
         dispatch(register({username, password}));
@@ -40,10 +53,13 @@ const RegisterForm = () => {
     }, [dispatch]);
 
     // register success / failure
-    useEffect(() => {
+    useEffect(() => { //request날리고 서버에서 날라온 에러
         if(authError) {
-            console.log('Error');
-            console.log(authError);
+            if(authError.response.status === 409){
+                setError('same user name!');
+                return;
+            }
+            setError('register fail!');            
             return;
         }
         if(auth) {
@@ -57,10 +73,16 @@ const RegisterForm = () => {
     // user checking
     useEffect(() => {
         if(user){
-            console.log('check API success');
-            console.log(user);
+            // console.log('check API success');
+            // console.log(user);
+            navigate('/');
+            try{
+                localStorage.setItem('user', JSON.stringify(user));   //새로고침을 해도 남아있음             
+            } catch(e){
+                console.log('localStorage is not working');
+            }
         }
-    }, [user]);
+    }, [user, navigate]);
 
 
     return (
@@ -69,8 +91,9 @@ const RegisterForm = () => {
             form={form}
             onChange={onChange}
             onSubmit={onSubmit}
+            error={error}
             />
     );
 }
 
-export default RegisterForm;
+export default RegisterForm;    // withRouter를 해줘야 History를 props로 담아옴.
