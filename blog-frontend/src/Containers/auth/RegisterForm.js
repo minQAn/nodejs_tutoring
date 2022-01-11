@@ -84,7 +84,6 @@ const RegisterForm = () => {
         }
     }, [user, navigate]);
 
-
     return (
         <AuthForm
             type="register"

@@ -4,19 +4,42 @@
 import { createAction, handleActions } from "redux-actions";
 import createRequestSaga, {createRequestActionTypes} from "../lib/createRequestSaga";
 import * as authAPI from '../lib/api/auth';
-import { takeLatest } from 'redux-saga/effects';
+import { call, takeLatest } from 'redux-saga/effects';
 
 
 const TEMP_SET_USER = 'user/TEMP_SET_USER'; //새로고침 후에 임시로그인 처리
 
 const [CHECK, CHECK_SUCCESS, CHECK_FAILURE] = createRequestActionTypes('user/CHECK'); 
+const LOGOUT = 'user/LOGOUT'; // logout에는 따로 success, failure구지 필요없을듯.
 
 export const tempSetUser = createAction(TEMP_SET_USER, user => user); //액션, payload로 날라오는걸 어떻게 할지 세팅
 export const check = createAction(CHECK);
+export const logout = createAction(LOGOUT);
+
 
 const checkSaga = createRequestSaga(CHECK, authAPI.check);
+
+function checkFailureSaga(){
+    try{
+        localStorage.removeItem('user');        
+    }catch(e){
+        console.log('localStorage is not working');
+    }
+}
+
+function* logoutSaga(){
+    try{
+        yield call(authAPI.logout);
+        localStorage.removeItem('user');        
+    }catch(e){
+        console.log(e);
+    }
+}
+
 export function* userSaga(){
     yield takeLatest(CHECK, checkSaga);
+    yield takeLatest(CHECK_FAILURE, checkFailureSaga); //로그인이 끝났는데 아직 브라우저를 안꺼서 프론트에서 상태를 모르는경우..?
+    yield takeLatest(LOGOUT, logoutSaga);
 }
 
 const initialState = {
@@ -41,4 +64,8 @@ export default handleActions({ //reducer
         user: null,
         checkError: error,
     }),
+    [LOGOUT]: state => ({
+        ...state,
+        user: null
+    })
 }, initialState);

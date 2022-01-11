@@ -40,7 +40,7 @@ const UserInfo = styled.div`
 
 
 // container는 state를 관리하기위해서
-const Header = ({user}) => {
+const Header = ({user, onLogout}) => {
     return (
         <>
             <HeaderBlock>
@@ -49,7 +49,7 @@ const Header = ({user}) => {
                     {user ? (
                         <div className='right'>
                             <UserInfo>{user.username}</UserInfo>
-                            <Button>Logout</Button>
+                            <Button onClick={onLogout}>Logout</Button>
                         </div>
                     ) : (
                         <div className="right">
