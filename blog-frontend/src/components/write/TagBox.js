@@ -73,24 +73,30 @@ const TagList = React.memo(({tags, onRemove}) => (
     </TagListBlock>
 ));
 
-const TagBox = () => {
+const TagBox = ({ tags, onChangeTags }) => {
 
     const [input, setInput] = useState('');
-    const [localTags, setLocalTags] = useState([]);
+    // const [localTags, setLocalTags] = useState([]);
 
     const insertTag = useCallback(  //함수 재 생성을 방지
         tag => {
             if(!tag) return;
-            if(localTags.includes(tag)) return; //이미 추가한 tag는 방지
-            setLocalTags([...localTags, tag]);
-        }, [localTags, setLocalTags]
+            if(tags.includes(tag)) return; //이미 추가한 tag는 방지
+
+            const nextTags = [...tags, tag];
+
+            // setLocalTags(nextTags);
+            onChangeTags(nextTags);
+        }, [tags, onChangeTags]
     );
 
     // tag를 클릭했을때 remove 되는걸로 했음
     const onRemove = useCallback(
         tag => {
-            setLocalTags(localTags.filter(t => t !== tag));
-        }, [localTags, setLocalTags]
+            const nextTags = tags.filter(t => t!== tag);
+            // setLocalTags(nextTags);
+            onChangeTags(nextTags);
+        }, [onChangeTags, tags]
     );
 
     const onChange = useCallback(
@@ -98,6 +104,8 @@ const TagBox = () => {
             setInput(e.target.value)
         }, []
     );
+
+
 
     const onSubmit = useCallback(
         e => {
@@ -115,7 +123,7 @@ const TagBox = () => {
                 <button type='submit'>Add</button>
             </TagForm>
             {/* 위 아래로 따로 나눠야 불필요한 리렌더링을 안함. */}
-            <TagList tags={localTags} onRemove={onRemove} />            
+            <TagList tags={tags} onRemove={onRemove} />            
         </TagBoxBlock>
     );
 }

@@ -33,7 +33,7 @@ const QuillWrapper = styled.div`
     }    
 `;
 
-const Editor = () => {
+const Editor = ({ title, body, onChangeField }) => {
     const quillElement = useRef(null);
     const quillInstance = useRef(null);
 
@@ -52,11 +52,28 @@ const Editor = () => {
                 ]
             }
         });
-    }, []);
+
+        const quill = quillInstance.current;
+        quill.on('text-change', (delta, oldDelta, source) => {
+            if(source === 'user'){ //엡에있는 유저가 아니고 그냥quill에서 정한 방식임
+                onChangeField({ key: 'body', value: quill.root.innerHTML });
+            }
+        });
+
+    }, [onChangeField]);
+
+
+    
+
+    // quill 이라는 에이터를 쓸때는 이런식으로 한번 거쳐야 됨.
+    const onChangeTitle = e => {
+        onChangeField({ key: 'title', value: e.target.value })
+    };
+
     
     return (
         <EditorBlock>
-            <TitleInput placeholder='Input title...' />
+            <TitleInput placeholder='Input title...' onChange={onChangeTitle} value={title} />
             <QuillWrapper>
                 <div ref={quillElement} />
             </QuillWrapper>

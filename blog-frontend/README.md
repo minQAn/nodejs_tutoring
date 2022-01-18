@@ -27,3 +27,14 @@ Logout, quill ( Write ) 글쓰기 컴포넌트
 quill은 글쓰기에서 글씨쓰고 드레그해보면 여러 옵션들을 사용할 수 있게 도와줌.
 useMemo를 컴포넌트 따로구분해서 불필요한 렌더링 방지
 write/Editor, TagBox 작성완료 
+
+
+1월 17일
+Editor, Tagbox, WriteActionButton의 컨테이너들을 만들어서 거기서 redux의
+사가 액션들과 데이터를 받고 컴포넌트 들로 전송해줬음 
+추가된 파일
+components/write/WriteActionButton
+Containers/write/EditorContainer, TagBoxContainer, WriteActionButtonsContainer
+api/posts
+modules/write
+

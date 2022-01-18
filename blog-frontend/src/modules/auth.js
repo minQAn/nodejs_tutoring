@@ -51,7 +51,7 @@ export function * authSaga(){
 };
 
 export const initializeForm = createAction(INITIALIZE_FORM,
-    form => form);
+    form => form); //'login' or 'register'
 
 const initialState = {
     register: {
@@ -78,7 +78,7 @@ const auth = handleActions( //reducer 할때 타입받아와서 switch안에서 
         }),
         [INITIALIZE_FORM]: (state, {payload: form}) => ({
             ...state,
-            [form]: initialState[form],
+            [form]: initialState[form], // login: {username, password} or register:{}
             authError: null                        
         }),
         [REGISTER_SUCCESS]: (state, {payload: auth}) => ({ //reducer..
@@ -90,7 +90,7 @@ const auth = handleActions( //reducer 할때 타입받아와서 switch안에서 
             ...state,
             authError: error,                           
         }),
-        [LOGIN_SUCCESS]: (state, {payload: auth}) => ({ //reducer..
+        [LOGIN_SUCCESS]: (state, {payload: auth}) => ({ // auth is username..
             ...state,
             authError: null,
             auth                        

@@ -22,7 +22,7 @@ export default function createRequestSaga(type, request){
             const response = yield call(request, action.payload); // call은 그결과가 resolve가 될때까지 멈춰있음. await같이.. //createAction으로 보내면 .payload로 자동으로 보냄.
             yield put({
                 type: SUCCESS, //action 같이..
-                payload: response.data,                
+                payload: response.data,              
             });
         } catch (e) {
             yield put({
