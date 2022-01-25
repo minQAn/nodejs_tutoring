@@ -38,3 +38,18 @@ Containers/write/EditorContainer, TagBoxContainer, WriteActionButtonsContainer
 api/posts
 modules/write
 
+
+
+1월 24일
+숙제: 포스트 목록 불러오기
+    qs 라는 라이브러리를 다운받아서 
+    const queryString = qs.stringify({
+        page, username, tag
+    });
+    client.get(`/api/posts?${queryString`);
+    이런식으로 날리게됨.
+
+오늘한 내용: common폴더에 SubInfo, Tags 공통으로 되는 부분 빼줬고,
+          post 폴더에 PostList, PostViewer 컴포넌트 작성,
+          Conatiner 폴더->post->PostViewerContainer작성
+          modules 폴더에 post 리듀터밑 사가 작성하고 index(root)에 추가
