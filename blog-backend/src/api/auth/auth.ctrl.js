@@ -11,7 +11,7 @@ const User = require('../../models/user');
 exports.register = async(ctx) => {
     const schema = Joi.object().keys({
         username: Joi.string()
-        .alphanum() //스트링과 숫자만 받고 3~20글자로 꼭적어야함. (특수문자안된다는 뜻)
+        .alphanum() //스트링과 숫자만 받고 3~20글자로 꼭적어야함. (특수문자안된다는 뜻) //<>태그같은건 걸러서 <Script>같은거 걸름
         .min(3)     
         .max(20)
         .required(),

@@ -4,8 +4,42 @@ const Post = require('../../models/post');
 
 const mongoose = require('mongoose');
 const Joi = require('joi'); // for validation?
+const sanitizeHtml = require('sanitize-html'); // html을 보여줄때 서버에서 먼저 작업을 해주고 보내줘야해서..? <script>같은거 걸러주기위해
 
 const {ObjectId} = mongoose.Types;
+
+// browser에서 p태그가 그대로 나오는데.. 그부분을 없애줌.., 에디터 lib를 사용했던부분.. 그리고 너무 길면 200자로 줄여서 리스트로 보내주는걸로?
+const removeHtmlAndShorten = body => {
+  const filtered = sanitizeHtml(body, {
+    allowedTags: [],    
+  });
+  return filtered.length < 200 ? filtered : `${filtered.slice(0, 200)}...`; // list에서는 구지 디테일을 다보여줄 필요가없고, 컨텐트 내용만 보여주면 되기때문에 줄여서 보내줌
+}
+
+const sanitizeOption = {
+  allowedTags: [
+    'h1',
+    'h2',
+    'b',
+    'i',
+    'u',
+    's',
+    'p',
+    'ul',
+    'ol',
+    'li',
+    'blockquote',
+    'a',
+    'img',
+  ],
+  allowedArributes: {
+    a: ['href', 'name', 'target'],
+    img: ['src'],
+    li: ['class']
+  },
+  allowedSchemas: ['data', 'http']
+} //이것들만 허용을하고, 나머지는 에러를 리턴하나 그렇게됨.
+
 
 // MiddleWare (for Validation)
 // 11월4일 
@@ -68,7 +102,7 @@ exports.write = async (ctx) => {
   // model을 만듬
   const post = new Post({
     title,
-    body,
+    body: sanitizeHtml(body, sanitizeOption), //라이브러리 사용방법..
     tags,
     user: ctx.state.user
   }); 
@@ -120,8 +154,8 @@ exports.list = async(ctx) => { //10은 소숫점없이 받는다는 뜻? decimal
       .map(post => post.toJSON())  //find를 통해서 조회한 데이터는 mongoose에서 제공한 인스턴스라 toJSON으로 변환하고 필요한 부분을 바꿀수있다.
       .map(post => ({
         ...post,
-        body:
-        post.body.length < 200 ? post.body : `${post.body.slice(0, 200)}...` //글자가 200개가 넘으면 ... 으로 하기
+        body: removeHtmlAndShorten(post.body) //함수로 따로 만들었음
+        // post.body.length < 200 ? post.body : `${post.body.slice(0, 200)}...` //글자가 200개가 넘으면 ... 으로 하기
       })); 
   } catch(e){
     ctx.throw(500, e);
@@ -186,8 +220,12 @@ exports.update = async (ctx) => {
   // validation end----
   
   const { id } = ctx.params;
+  const nextData = { ...ctx.request.body};
+  if(nextData.body){
+    nextData.body = sanitizeHtml(nextData.body, sanitizeOption); 
+  }
   try{
-    const post = await Post.findByIdAndUpdate(id, ctx.request.body, {new: true}).exec(); // id, request.body(바꿀내용), new:true를하면 업데이트된 값을 리턴해준다. false일때는 업데이트 되기전의 데이터를 리턴해준다.
+    const post = await Post.findByIdAndUpdate(id, nextData, {new: true}).exec(); // id, request.body(바꿀내용), new:true를하면 업데이트된 값을 리턴해준다. false일때는 업데이트 되기전의 데이터를 리턴해준다.
     
     if(!post){
       ctx.status = 404;

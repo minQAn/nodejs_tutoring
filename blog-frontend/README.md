@@ -46,10 +46,27 @@ modules/write
     const queryString = qs.stringify({
         page, username, tag
     });
-    client.get(`/api/posts?${queryString`);
+    client.get(`/api/posts?${queryString}`);
     이런식으로 날리게됨.
 
 오늘한 내용: common폴더에 SubInfo, Tags 공통으로 되는 부분 빼줬고,
           post 폴더에 PostList, PostViewer 컴포넌트 작성,
           Conatiner 폴더->post->PostViewerContainer작성
           modules 폴더에 post 리듀터밑 사가 작성하고 index(root)에 추가
+
+
+
+2월 14일
+    오늘한 내용: 
+        backend: posts->posts.crtl 에서 sanitize 를 사용하여 보안 강화, script태그 같은거 걸름
+        frontend: components->post->PostList
+                  Containers->posts->PostListContainer
+                  lib->api->posts 에서 qs를 사용하여 query로 날림
+                  modules->posts 추가
+                  pages->PostListPage
+
+    다음주 할 것
+        페이지네이션
+        수정삭제기능
+        리엑트 헬멧(메타정보 관리)
+    

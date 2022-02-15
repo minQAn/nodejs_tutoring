@@ -53,6 +53,7 @@ const LoginForm = () => {
         }
     }, [auth, authError, dispatch]);
 
+    //로그인에 성공했을때 로컬에 user를 저장하고 (저장하는 이유는 새로고침 했을때 데이터 날라갔을때 로컬에서 다시 불러오기 위해서)
     useEffect(() => {
         if(user){
             navigate('/');
