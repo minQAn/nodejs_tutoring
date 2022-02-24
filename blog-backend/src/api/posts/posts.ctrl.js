@@ -147,8 +147,9 @@ exports.list = async(ctx) => { //10은 소숫점없이 받는다는 뜻? decimal
       .skip((page - 1) * pageItemCount) //스킵해서 보여주기
       .exec(); // find는 몽구스 함수 
     const postCount = await Post.countDocuments(query).exec();
-    ctx.set('Last-Page', Math.ceil(postCount / pageItemCount)); //set은 header에다가 넣어주는것 //ceil은 올림 // 나누기10은 한페이지당 10개씩보여줄려고 //4.5면 마지막 페이지는 5개를 보여줘야해서 //이건 프론트쪽에서 마지막페이지를 알아야하기때문에 정보를 주기위해
-    
+    ctx.set('last-page', Math.ceil(postCount / pageItemCount)); //set은 header에다가 넣어주는것 //ceil은 올림 // 나누기10은 한페이지당 10개씩보여줄려고 //4.5면 마지막 페이지는 5개를 보여줘야해서 //이건 프론트쪽에서 마지막페이지를 알아야하기때문에 정보를 주기위해
+    // last-page는 소문자로 해야함.
+
     //다 받아온거를..
     ctx.body = posts
       .map(post => post.toJSON())  //find를 통해서 조회한 데이터는 mongoose에서 제공한 인스턴스라 toJSON으로 변환하고 필요한 부분을 바꿀수있다.

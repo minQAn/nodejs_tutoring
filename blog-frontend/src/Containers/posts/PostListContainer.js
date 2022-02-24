@@ -8,7 +8,7 @@ import { listPosts } from '../../modules/posts';
 const PostListContainer = () => {
     const dispatch = useDispatch();
     const { username } = useParams();
-    const location = useLocation();
+    const location = useLocation(); //이게 핵심
 
     const { posts, error, loading, user } = useSelector(
         ({posts, loading, user}) => ({
@@ -20,7 +20,7 @@ const PostListContainer = () => {
     );
 
 
-    useEffect(() => {
+    useEffect(() => { //바뀌는 location.search (즉 url)이 바뀔때마다 axios.get요청이 일어나서 그에 맞는 정보를 가져옴
         const{ tag, page } = qs.parse(location.search, {
             ignoreQueryPrefix: true  // ? 를 없애고 뒷부분만 가져오는 것 ex) ?name=minhee 이런것들..
         });

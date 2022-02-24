@@ -21,13 +21,15 @@ export function* postsSaga(){
 const initialState = {
     posts: null,
     error: null,
+    lastPage: 1
 };
 
 const posts = handleActions(
     {
-        [LIST_POSTS_SUCCESS]: (state, {payload: posts}) => ({ 
+        [LIST_POSTS_SUCCESS]: (state, {payload: posts, meta: response}) => ({  //meta는 configuration같은 data들
             ...state,
             posts,
+            lastPage: parseInt(response.headers['last-page'], 10) // 10의 의미는 뒤에 날라오는 값의 소숫점을 없앰. 마지막페이지를 저장 //last-page는 소문자여야 하나봄..?대문자하니 에러..
         }),
         [LIST_POSTS_FAILURE]: (state, {payload: error}) => ({
             ...state,

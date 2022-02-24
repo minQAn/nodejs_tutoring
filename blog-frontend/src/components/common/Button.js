@@ -20,6 +20,12 @@ const buttonStyle = css`
         background: ${palette.gray[6]};
     }
 
+    &:disabled{
+        background: ${palette.gray[3]};
+        color: ${palette.gray[5]};
+        cursor: not-allowed;
+    }
+
     // 넓이에 관한 attribute
     ${props =>  // fullWidth라는 props를 넘겨주면 밑에 css가 적용이됨.
         props.fullWidth && 

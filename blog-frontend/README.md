@@ -69,4 +69,29 @@ modules/write
         페이지네이션
         수정삭제기능
         리엑트 헬멧(메타정보 관리)
+
+
+2월 23일
+    페이지네이션 완료. prev , next
+    핵심은 useLocation, location.search로 url을가지고 바뀌는 경우에따라 계속 useEffect로 값을 axios.get으로 데이터를 가져옴.
+    PaginationContainer에 axios가없는건 PostListContainer에서 redux store값이 바뀌는걸로 값을 가져와서.
+
+    meta를 쓴이유는 header 에서 lastPage 를 저장해서 가지고 오려고.
+    
+    수정된 부분: back에서 posts.ctrl -> list부분
+              front에서 Button.js
+                       components -> posts생성 -> Pagination.js
+                       Containers -> posts -> PaginationContainer 생성
+                                              PostListContainer 수정
+                       createRequestSaga -> success했을 때 meta정보 (lastPage를 header에 저장한거 가져오려고) 추가
+                       modules -> posts 수정(lastPage를 server에서 ctx.headers에 담은걸 가져와서 저장 from meta)
+                       
+                       PostLIstPage에 작성한 prev next 페이지네이션 컴포넌트 추가
+    다음주
+        수정삭제기능
+        리액트 헬멧(메타정보 관리): 구글검색같은거 했을때 밑에 조그만하게 컨텐트가 뜨는거 Search 관련
+    
+
+
+
     
