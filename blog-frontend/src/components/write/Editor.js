@@ -62,9 +62,14 @@ const Editor = ({ title, body, onChangeField }) => {
 
     }, [onChangeField]);
 
+    const mounted = useRef(false);
+    useEffect(() => {
+        if(mounted.current) return; //맨처음 랜더링될때만 여기가 실행되고, 값이 변할때마다 변경되는걸 방지하기위해
+        mounted.current = true;
+        quillInstance.current.root.innerHTML = body; //quill라이브러리 사이트 참고        
+    }, [body]);// 바디가 변경될때마다, 처음에는 mounted false주고 나중에 true로바꿔주면 이컴포넌트가 없어지기 전까지는 이 마운티드라는애는 true라는값을 가지고있음.
 
     
-
     // quill 이라는 에이터를 쓸때는 이런식으로 한번 거쳐야 됨.
     const onChangeTitle = e => {
         onChangeField({ key: 'title', value: e.target.value })

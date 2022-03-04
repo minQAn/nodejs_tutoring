@@ -18,11 +18,11 @@ const StyledButton = styled(Button)` //extended 가 important 우선시됨, 부�
     }    
 `;
 
-const WriteActionButtons = ({ onCancel, onPublish }) => {
+const WriteActionButtons = ({ onCancel, onPublish, isEdit }) => {
     return(
         <WriteActionButtonBlock>
             <StyledButton cyan onClick={onPublish}>
-                Post
+                {isEdit ? 'Edit' : 'Post'}
             </StyledButton>
             <StyledButton onClick={onCancel}>Cancel</StyledButton>
         </WriteActionButtonBlock>

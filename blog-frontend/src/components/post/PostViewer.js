@@ -26,7 +26,7 @@ const PostContent = styled.div`
     color: ${palette.gray[8]};
 `;
 
-const PostViewer = ({post, error, loading}) => {
+const PostViewer = ({post, error, loading, actionButtons}) => {
     if(error){
         if(error.response && error.response.state === 404){
             return <PostViewerBlock>Post is not exist.</PostViewerBlock>
@@ -47,6 +47,9 @@ const PostViewer = ({post, error, loading}) => {
                 <SubInfo username={user.username} publishedDate={new Date(publishedDate).toLocaleDateString()} hasMarginTop />
                 <Tags tags={tags} />                                    
             </PostHead>
+
+            {actionButtons}
+            
             <PostContent dangerouslySetInnerHTML={{__html: body}} /> {/* dangerouslySetInnerHTML는 쓰는이유는 quill 에디터에서는 text식으로 나오기때문에 */}
         </PostViewerBlock> 
     );
