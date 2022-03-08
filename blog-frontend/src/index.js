@@ -10,6 +10,7 @@ import { composeWithDevTools } from 'redux-devtools-extension';
 import createSagaMiddleware from 'redux-saga';
 import rootReducer, {rootSaga} from './modules';
 import { tempSetUser, check } from './modules/user';
+import { HelmetProvider } from 'react-helmet-async';
 
 
 //비동기 처리 저장소? like axios
@@ -36,7 +37,9 @@ loadUser(); //유저 로그인 상태 체크
 ReactDOM.render(
   <Provider store={store}>
     <BrowserRouter>
-      <App />
+      <HelmetProvider>   {/* 이걸하면 검색엔진과 관련되게 사용가능.. */}
+        <App />
+      </HelmetProvider>
     </BrowserRouter>
   </Provider>,
   document.getElementById('root')

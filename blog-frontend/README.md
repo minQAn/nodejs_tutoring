@@ -90,8 +90,22 @@ modules/write
     다음주
         수정삭제기능
         리액트 헬멧(메타정보 관리): 구글검색같은거 했을때 밑에 조그만하게 컨텐트가 뜨는거 Search 관련
+
+
+3월 3일
+    수정완료
+    
+    다음주: 삭제기능, 리액트 헬멧: search 관련
     
 
+3월 7일
+    request요청후 return 을 해야만 await가 먹힘!!!! promise를 리턴해야함
+    
+    react-helmet-async 모듈 설치 -> 검색엔진
+    
+    SEO란 meta데이터안에 검색이되게끔.. (Search Engin Optimiztion)
+    그리고 초기 렌더링을 빠르게 하기위해서 
+    이두개를 위해서는 서버사이드 렌더링 이란게 필요: next js라는것. 
 
 
 

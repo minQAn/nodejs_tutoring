@@ -20,9 +20,12 @@ export const listPosts = ({ page, username, tag}) => {
     return client.get(`/api/posts?${queryString}`);
 }
 
-export const updatePost = ({id, title, body, tags}) => 
+export const updatePost = ({id, title, body, tags}) => // payload
     client.patch(`/api/posts/${id}`, {
         title,
         body,
         tags,
     });
+
+export const removePost = (id) => 
+    client.delete(`/api/posts/${id}`);      //return 을 해야만 await가 먹힘!!!!
